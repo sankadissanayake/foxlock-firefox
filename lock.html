@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FoxLock</title>
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      background-color: #121212;
+      color: #e8e8ea;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      -moz-user-select: none;
+      user-select: none;
+    }
+
+    .card {
+      width: min(380px, 90vw);
+      padding: 44px 32px 36px;
+      background-color: #1b1b1e;
+      border: 1px solid #2a2a2f;
+      border-radius: 16px;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+    }
+
+    .subtitle {
+      margin: 0 0 28px;
+      font-size: 14px;
+      color: #9a9aa2;
+    }
+
+    input[type="password"] {
+      width: 100%;
+      padding: 13px 14px;
+      font-size: 16px;
+      color: #e8e8ea;
+      background-color: #121214;
+      border: 1px solid #34343a;
+      border-radius: 10px;
+      outline: none;
+      -moz-user-select: text;
+      user-select: text;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    input[type="password"]:focus {
+      border-color: #7aa2ff;
+      box-shadow: 0 0 0 3px rgba(122, 162, 255, 0.25);
+    }
+
+    button {
+      width: 100%;
+      margin-top: 14px;
+      padding: 13px 14px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #0d1220;
+      background-color: #7aa2ff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.15s ease, opacity 0.15s ease;
+    }
+
+    button:hover:not(:disabled) {
+      background-color: #92b3ff;
+    }
+
+    button:focus-visible {
+      outline: 2px solid #ffffff;
+      outline-offset: 2px;
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: default;
+    }
+
+    #error {
+      min-height: 22px;
+      margin-top: 16px;
+      font-size: 14px;
+      line-height: 22px;
+      color: #ff7b7b;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>FoxLock</h1>
+    <p class="subtitle">Enter your master password to continue</p>
+    <form id="lock-form" autocomplete="off">
+      <input
+        id="password"
+        name="password"
+        type="password"
+        placeholder="Master password"
+        aria-label="Master password"
+        autocomplete="off"
+        autofocus
+        required>
+      <button id="unlock-btn" type="submit">Unlock</button>
+    </form>
+    <div id="error" role="alert" aria-live="assertive"></div>
+  </main>
+  <script src="lock.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "FoxLock",
+  "version": "1.0.0",
+  "description": "Master password lock screen shown at browser launch. Exits the browser on 3 wrong passwords or any bypass attempt.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "foxlock@foxlock.local",
+      "strict_min_version": "115.0"
+    }
+  },
+  "permissions": ["storage", "tabs"],
+  "background": {
+    "scripts": ["background.js"]
+  }
+}
