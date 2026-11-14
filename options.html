@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FoxLock settings</title>
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+      margin: 0;
+    }
+
+    body {
+      background-color: #121212;
+      color: #e8e8ea;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 48px 16px;
+    }
+
+    .card {
+      width: min(440px, 100%);
+      padding: 36px 32px;
+      background-color: #1b1b1e;
+      border: 1px solid #2a2a2f;
+      border-radius: 16px;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .subtitle {
+      margin: 0 0 24px;
+      font-size: 14px;
+      color: #9a9aa2;
+    }
+
+    #default-notice {
+      margin: 0 0 20px;
+      padding: 12px 14px;
+      font-size: 14px;
+      line-height: 1.45;
+      color: #ffd88a;
+      background-color: #2b2412;
+      border: 1px solid #5a4a1c;
+      border-radius: 10px;
+    }
+
+    label {
+      display: block;
+      margin: 16px 0 6px;
+      font-size: 14px;
+      color: #c9c9d0;
+    }
+
+    input[type="password"] {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 16px;
+      color: #e8e8ea;
+      background-color: #121214;
+      border: 1px solid #34343a;
+      border-radius: 10px;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    input[type="password"]:focus {
+      border-color: #7aa2ff;
+      box-shadow: 0 0 0 3px rgba(122, 162, 255, 0.25);
+    }
+
+    .hint {
+      margin: 6px 0 0;
+      font-size: 13px;
+      color: #8a8a92;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 24px;
+      padding: 13px 14px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #0d1220;
+      background-color: #7aa2ff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.15s ease, opacity 0.15s ease;
+    }
+
+    button:hover:not(:disabled) {
+      background-color: #92b3ff;
+    }
+
+    button:focus-visible {
+      outline: 2px solid #ffffff;
+      outline-offset: 2px;
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: default;
+    }
+
+    #status {
+      min-height: 22px;
+      margin-top: 16px;
+      font-size: 14px;
+      line-height: 22px;
+    }
+
+    #status.error {
+      color: #ff7b7b;
+    }
+
+    #status.success {
+      color: #7ddf9a;
+    }
+
+    .warning {
+      margin: 24px 0 0;
+      padding-top: 16px;
+      border-top: 1px solid #2a2a2f;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #8a8a92;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>FoxLock settings</h1>
+    <p class="subtitle">Change your master password</p>
+
+    <p id="default-notice" hidden>
+      You are still using the default password. Please change it now.
+    </p>
+
+    <form id="change-form" autocomplete="off">
+      <label for="current">Current password</label>
+      <input id="current" name="current" type="password" autocomplete="off" required>
+
+      <label for="next">New password</label>
+      <input id="next" name="next" type="password" autocomplete="off" minlength="8" maxlength="128" required>
+      <p class="hint">At least 8 characters. It cannot be the default password.</p>
+
+      <label for="confirm">Confirm new password</label>
+      <input id="confirm" name="confirm" type="password" autocomplete="off" maxlength="128" required>
+
+      <button id="save-btn" type="submit">Change password</button>
+    </form>
+
+    <div id="status" role="status" aria-live="polite"></div>
+
+    <p class="warning">
+      There is no password recovery. If you forget it, start Firefox in
+      Troubleshoot Mode (hold Shift while opening it) and remove the add-on.
+    </p>
+  </main>
+  <script src="auth.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

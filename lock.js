@@ -2,8 +2,6 @@
 
 (() => {
   const MAX_ATTEMPTS = 3;
-  const DEFAULT_PASSWORD = "admin123";
-  const PASSWORD_KEY = "password";
   const ATTEMPTS_KEY = "attemptsLeft";
 
   const form = document.getElementById("lock-form");
@@ -15,16 +13,6 @@
 
   function showError(text) {
     errorBox.textContent = text;
-  }
-
-  async function getPassword() {
-    const stored = await browser.storage.local.get(PASSWORD_KEY);
-    const value = stored[PASSWORD_KEY];
-    if (typeof value === "string" && value.length > 0) {
-      return value;
-    }
-    await browser.storage.local.set({ [PASSWORD_KEY]: DEFAULT_PASSWORD });
-    return DEFAULT_PASSWORD;
   }
 
   // Attempts are kept in storage.session so reloading the page does not reset them.
@@ -61,9 +49,8 @@
     let finished = false;
     try {
       const attempt = input.value;
-      const expected = await getPassword();
 
-      if (attempt === expected) {
+      if (await FoxAuth.verify(attempt)) {
         await setAttemptsLeft(MAX_ATTEMPTS);
         let response = null;
         try {

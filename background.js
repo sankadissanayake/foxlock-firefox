@@ -11,8 +11,6 @@
 const LOCK_URL = browser.runtime.getURL("lock.html");
 const STATE_KEY = "foxlockState";
 const ATTEMPTS_KEY = "attemptsLeft";
-const PASSWORD_KEY = "password";
-const DEFAULT_PASSWORD = "admin123";
 const MAX_ATTEMPTS = 3;
 
 // Windows and tabs created by session restore right after startup are hidden
@@ -53,16 +51,6 @@ function isLocked() {
 
 function inStartupGrace() {
   return Date.now() - state.startedAt < STARTUP_GRACE_MS;
-}
-
-async function getStoredPassword() {
-  const stored = await browser.storage.local.get(PASSWORD_KEY);
-  const value = stored[PASSWORD_KEY];
-  if (typeof value === "string" && value.length > 0) {
-    return value;
-  }
-  await browser.storage.local.set({ [PASSWORD_KEY]: DEFAULT_PASSWORD });
-  return DEFAULT_PASSWORD;
 }
 
 /* ------------------------------------------------------------------ */
@@ -121,7 +109,7 @@ async function startLock() {
     state = { ...DEFAULT_STATE, isUnlocked: false, startedAt: Date.now() };
     await saveState();
     await browser.storage.session.set({ [ATTEMPTS_KEY]: MAX_ATTEMPTS });
-    await getStoredPassword(); // makes sure the default password exists
+    await FoxAuth.ensure(); // creates or upgrades the stored password record
 
     const win = await browser.windows.create({
       url: LOCK_URL,
@@ -216,8 +204,7 @@ async function handleMessage(message, sender) {
     case "unlock": {
       // The background re-checks the password so that a forged "unlock"
       // message from the lock page console alone is not enough.
-      const expected = await getStoredPassword();
-      if (typeof message.password !== "string" || message.password !== expected) {
+      if (!(await FoxAuth.verify(message.password))) {
         return { ok: false, reason: "bad-password" };
       }
       // Reply first; unlock() closes the page that is waiting for the reply.
